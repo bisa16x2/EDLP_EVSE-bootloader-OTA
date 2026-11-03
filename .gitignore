@@ -1,0 +1,7 @@
+build/
+**/build/
+*.elf
+*.hex
+*.bin
+compile_commands.json
+__pycache__/

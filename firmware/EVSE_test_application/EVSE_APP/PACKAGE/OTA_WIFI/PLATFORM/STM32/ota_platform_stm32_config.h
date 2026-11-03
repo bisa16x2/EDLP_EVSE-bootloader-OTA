@@ -1,0 +1,9 @@
+#ifndef OTA_PLATFORM_STM32_CONFIG_H
+#define OTA_PLATFORM_STM32_CONFIG_H
+
+#include "usart.h"
+
+#define OTA_PLATFORM_DEBUG_UART_HANDLE  (&huart3)
+#define OTA_PLATFORM_WIFI_UART_HANDLE   (&huart6)
+
+#endif // OTA_PLATFORM_STM32_CONFIG_H

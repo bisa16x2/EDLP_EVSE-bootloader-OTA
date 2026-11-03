@@ -1,0 +1,79 @@
+#ifndef BOOT_CONFIG_H
+#define BOOT_CONFIG_H
+
+#include <stdint.h>
+
+/* STM32F429ZI 내부 Flash */
+#define BOOT_FLASH_START_ADDRESS       0x08000000UL
+#define BOOT_FLASH_STACK_TOP           0x08200000UL
+#define BOOT_APP_START_ADDRESS         0x08020000UL
+#define BOOT_APP_END_ADDRESS           0x08100000UL
+#define BOOT_APP_MAX_SIZE              (BOOT_APP_END_ADDRESS - BOOT_APP_START_ADDRESS)
+
+/* OTA Staging: STM32F429ZI Internal Flash Bank2 */
+#define BOOT_STAGING_START_ADDRESS     0x08100000UL
+#define BOOT_STAGING_END_ADDRESS       0x081E0000UL
+#define BOOT_STAGING_CAPACITY          (BOOT_STAGING_END_ADDRESS - BOOT_STAGING_START_ADDRESS)
+
+/* CCMRAM 영역 : 0x10000000 ~ 0x1000FFFF */
+#define BOOT_CCMRAM_START_ADDRESS      0x10000000UL
+#define BOOT_CCMRAM_STACK_TOP          0x10010000UL
+
+/* 일반 SRAM 영역: 0x20000000 ~ 0x2002FFFF */
+#define BOOT_SRAM_START_ADDRESS        0x20000000UL
+#define BOOT_SRAM_STACK_TOP            0x20030000UL
+
+/* Backup SRAM: 0x40024000 ~ 0x40024FFF, 총 4KB */
+#define BOOT_BACKUP_SRAM_START_ADDRESS         0x40024000UL
+#define BOOT_BACKUP_SRAM_SIZE                  4096U
+
+/* App >> Boot 진입 요청 시 사영 Backup SRAM 영역 */
+// 0x40024000: Magic // 0x40024004: Inverse Magic
+
+#define BOOT_UPDATE_REQUEST_MAGIC_OFFSET       0U
+#define BOOT_UPDATE_REQUEST_INVERSE_OFFSET     4U
+
+#define BOOT_UPDATE_REQUEST_MAGIC              0x45565345UL
+#define BOOT_UPDATE_REQUEST_MAGIC_INVERSE      (~BOOT_UPDATE_REQUEST_MAGIC)
+
+#define BOOT_UPDATE_REQUEST_CLEAR_VALUE        0x00000000UL
+
+/* App과 공유하는 OTA staging metadata */
+#define BOOT_STAGING_MAGIC_OFFSET               8U
+#define BOOT_STAGING_INVERSE_OFFSET             12U
+#define BOOT_STAGING_SIZE_OFFSET                16U
+#define BOOT_STAGING_CRC32_OFFSET               20U
+
+#define BOOT_STAGING_MAGIC                      0x53544745UL
+#define BOOT_STAGING_MAGIC_INVERSE              (~BOOT_STAGING_MAGIC)
+#define BOOT_STAGING_CLEAR_VALUE                0x00000000UL
+
+/* Bootloader가 새 Application에 전달하는 설치 결과 */
+#define BOOT_UPDATE_RESULT_OFFSET               24U
+#define BOOT_UPDATE_RESULT_NONE                 0x00000000UL
+#define BOOT_UPDATE_RESULT_SUCCESS              0x53554343UL
+#define BOOT_UPDATE_RESULT_FAILURE              0x4641494CUL
+
+/* Bootloader 버전 */
+#define BOOTLOADER_VERSION_MAJOR       0U
+#define BOOTLOADER_VERSION_MINOR       1U
+#define BOOTLOADER_VERSION_PATCH       0U
+#define BOOTLOADER_VERSION_STRING      "0.1.0"
+
+/* UART 설정 */
+#define BOOT_UART_LINE_BUFFER_SIZE     64U
+#define BOOT_UART_RX_TIMEOUT_MS        1U
+#define BOOT_UART_TX_TIMEOUT_MS        100U
+
+/* 버튼 디바운싱 */
+#define BOOT_BUTTON_DEBOUNCE_MS        20U
+
+/* 상태 LED 주기 */
+#define BOOT_LED_TOGGLE_INTERVAL_MS    200U
+
+// test enable
+#define BOOT_ENABLE_STORAGE_TEST    1
+#define BOOT_ENABLE_CRC32_TEST      1
+#define BOOT_ENABLE_UPDATE_TEST     1
+
+#endif // BOOT_CONFIG_H
